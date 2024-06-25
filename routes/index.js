@@ -1,45 +1,14 @@
 var express = require("express");
 var router = express.Router();
-const hashPassword = require("../passwordHelper").hashPassword;
-const passport = require("passport");
-const UserModel = require("../models/userModel");
+const homeController = require("../controllers/homeController");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Members Club" });
-});
+router.get("/", homeController.index);
 
-router.get("/signup", function (req, res, next) {
-  res.render("signup", { title: "Create an Account!" });
-});
+router.get("/signup", homeController.getSignUpForm);
 
-router.post("/signup", async (req, res, next) => {
-  try {
-    const hashedPassword = await hashPassword(req.body.password);
-    console.log(hashedPassword);
-    const userDetails = {
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      username: req.body.username,
-      password: hashedPassword,
-      status: true,
-      isAdmin: false,
-    };
-    const user = new UserModel(userDetails);
-    await user.save();
+router.post("/signup", homeController.signUp);
 
-    res.redirect("/");
-  } catch (err) {
-    return next(err);
-  }
-});
-
-router.post(
-  "/log-in",
-  passport.authenticate("local", {
-    successRedirect: "/user",
-    failureRedirect: "/",
-  })
-);
+router.post("/log-in", homeController.login);
 
 module.exports = router;

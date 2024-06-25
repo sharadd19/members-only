@@ -7,10 +7,10 @@ block content
 
     form(method='POST' action="/signup")
       div.form-group
-        div.first-name
+        div.firstName
           label(for="firstName") #[strong First Name]: 
           input#firstName.form-control(type='text', name='firstName' required)  
-        div.last-name
+        div.lastName
           label(for="lastName") #[strong Last Name]: 
           input#lastName.form-control(type='text', name='lastName' required)
         div.username
@@ -19,6 +19,9 @@ block content
         div.password
           label(for="password") #[strong Password]: 
           input#password.form-control(type='password', name='password' required)
+        div.confirmPassword
+          label(for="confirmPassword") #[strong Confirm Password]: 
+          input#confirmPassword.form-control(type='password', name='confirmPassword' required)
         div.button-group
           button(type="submit" class="button") Sign Up 
     

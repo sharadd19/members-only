@@ -5,6 +5,26 @@ block content
   div.wrapper
     h1 Welcome #{user}!
     
+    h3 All Posts 
+
+    if postList.length 
+        .grid
+            each post in postList 
+                .card   
+                    a(href=post.url) #{post.title}
+                    p #{post.description}
+                    p #{post.date_formatted}
+                    p #{post.user}
+    else 
+        #[strong There are no posts. Please create one.]
+
+    a(href="/post/create") Create Post 
+
+    a(href=user.url+"/getPosts") My Posts 
+
+    a(href="/user/membership") Membership 
+
+
 
 
 

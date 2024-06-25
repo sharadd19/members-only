@@ -30,13 +30,13 @@ console.log(
   }
   
   
-  async function createUser(index, firstName, familyName, username, password, status, isAdmin) {
+  async function createUser(index, firstName, familyName, username, password, membership, isAdmin) {
     const userDetail = {
       firstName: firstName,
       familyName: familyName, 
       username: username, 
       password: password, 
-      status: status, 
+      membership: membership, 
       isAdmin: isAdmin
     };
   

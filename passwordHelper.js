@@ -1,16 +1,16 @@
 const bcrypt = require("bcryptjs");
 
-module.exports.hashPassword = async (userPassword) => {
-  const hashedPassword = bcrypt.hash(userPassword, 10, async (err, hashedPassword) => {
+module.exports.hashPassword = (userPassword) => {
+  bcrypt.hash(userPassword, 10, (err, hashedPassword) => {
+    console.log(hashedPassword);
     if (err) {
       console.log(err);
     } else {
-      return await hashedPassword; 
+      return hashedPassword; 
     }
   });/* 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(userPassword, salt); */
-  return hashedPassword;
 };
 
 module.exports.isValidPassword = async (userPassword, dbPassword) => {
