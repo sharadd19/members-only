@@ -26,7 +26,7 @@ exports.signUp = [
 
   asyncHandler(async (req, res, next) => {
     try {
-      const hashedPassword = hashPassword(req.body.password);
+      const hashedPassword = await Promise.resolve(hashPassword(req.body.password));
 
       const userDetails = {
         firstName: req.body.firstName,
