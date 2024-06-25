@@ -11,7 +11,7 @@ const isValidPassword = require("../passwordHelper").isValidPassword;
         if (!user) {
           return done(null, false, { message: "Incorrect username" });
         }
-        const match = await isValidPassword(password, user.password);
+        const match = await Promise.resolve(isValidPassword(password, user.password));
         //const match = await bcrypt.compare(password, user.password);
         if (!match) {
           // passwords do not match!

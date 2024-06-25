@@ -25,5 +25,8 @@ block content
         div.button-group
           button(type="submit" class="button") Sign Up 
     
-
+    if errors
+      ul
+        for error in errors
+          li!= error.msg
 

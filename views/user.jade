@@ -3,7 +3,8 @@ extends layout
 block content
   
   div.wrapper
-    h1 Welcome #{user}!
+    h1 Welcome #{user.fullName}!
+    a(href="/logout") Logout 
     
     h3 All Posts 
 
@@ -14,7 +15,7 @@ block content
                     a(href=post.url) #{post.title}
                     p #{post.description}
                     p #{post.date_formatted}
-                    p #{post.user}
+                    p #{post.user.fullName}
     else 
         #[strong There are no posts. Please create one.]
 

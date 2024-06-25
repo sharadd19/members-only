@@ -19,6 +19,14 @@ block content
     p Or
     a(href="/signup") Create an account! 
 
+    if failureMessages 
+      each message in failureMessages 
+        p #{message}
+    if errors
+      ul
+        for error in errors
+          li!= error.msg
+
 
 
 

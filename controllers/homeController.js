@@ -4,8 +4,28 @@ const UserModel = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
-exports.index = (req, res) => {
-  res.render("index", { title: "Members Club" });
+exports.index = /* [
+  body("username", "Username must exist")
+  .trim()
+  .isLength({min: 3})
+  .escape()
+  .custom(async value => {
+    return await UserModel.find({username: value}).exec()
+  })
+  .withMessage("Username doesn't exist"),
+  body("username", "Username must exist")
+  .trim()
+  .isLength({min: 3})
+  .escape()
+  .custom(async value => {
+    return await UserModel.find({username: value}).exec()
+  })
+  .withMessage("Username doesn't exist"),   
+
+  , */(req, res) => {
+  var failureMessages = [... new Set(req.session.messages)]
+  
+  res.render("index", { title: "Members Club", failureMessages: failureMessages});
 };
 
 exports.getSignUpForm = (req, res) => {
@@ -21,12 +41,31 @@ exports.signUp = [
     .trim()
     .isLength({ min: 3 })
     .escape(),
-  body("confirmPassword", "Passwords must match").trim().isLength({min: 3}).escape()
-  .custom((value, {req}) => value === req.body.password).withMessage("The passwords do not match"),
+  body("confirmPassword", "Passwords must match")
+    .trim()
+    .isLength({ min: 3 })
+    .escape()
+    .custom((value, { req }) => {
+      return value === req.body.password;
+    })
+    .withMessage("The passwords do not match"),
 
   asyncHandler(async (req, res, next) => {
-    try {
-      const hashedPassword = await Promise.resolve(hashPassword(req.body.password));
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+      
+
+      res.render("signup", {
+        title: "Create an account!",
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const hashedPassword = await Promise.resolve(
+        hashPassword(req.body.password)
+      );
 
       const userDetails = {
         firstName: req.body.firstName,
@@ -40,8 +79,6 @@ exports.signUp = [
       await user.save();
 
       res.redirect("/");
-    } catch (err) {
-      return next(err);
     }
   }),
 ];
@@ -49,4 +86,14 @@ exports.signUp = [
 exports.login = passport.authenticate("local", {
   successRedirect: "/user",
   failureRedirect: "/",
+  failureMessage: true
 });
+
+exports.logout = (req,res) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+}

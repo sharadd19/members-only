@@ -9,6 +9,8 @@ router.get("/signup", homeController.getSignUpForm);
 
 router.post("/signup", homeController.signUp);
 
-router.post("/log-in", homeController.login);
+router.post("/login", homeController.login);
+
+router.get("/logout", homeController.logout)
 
 module.exports = router;

@@ -8,6 +8,6 @@ module.exports.hashPassword = (userPassword) => {
   const hashedPassword = bcrypt.hashSync(userPassword, salt); */
 };
 
-module.exports.isValidPassword = async (userPassword, dbPassword) => {
-  await bcrypt.compare(userPassword, dbPassword);
+module.exports.isValidPassword = (userPassword, dbPassword) => {
+  return bcrypt.compare(userPassword, dbPassword);
 };
