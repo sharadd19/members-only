@@ -1,5 +1,24 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  
+  div.wrapper
+    h1 Welcome to the #{title}
+    
+    form(method='POST' action="/login")
+      div.form-group
+        div.username
+          label(for="username") #[strong Username]: 
+          input#username.form-control(type='text', name='username' required)
+        div.password
+          label(for="password") #[strong Password]: 
+          input#password.form-control(type='password', name='password' required)
+        div.button-group
+          button(type="submit" class="button") Login 
+    
+    p Or
+    a(href="/signup") Create an account! 
+
+
+
+

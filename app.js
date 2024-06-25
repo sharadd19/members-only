@@ -5,7 +5,11 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+var userRouter = require("./routes/user");
+var postRouter = require("./routes/post");
+const passport = require("passport");
+
+const { error } = require("console");
 
 var app = express();
 
@@ -15,6 +19,7 @@ var mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 var session = require("express-session");
 var MongoStore = require("connect-mongo");
+
 main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGODB_URL);
@@ -45,10 +50,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+// AUTHENTICATION
+require("./config/passport")
+app.use(passport.initialize())
+app.use(passport.session());
+
+
 /* ------------------ROUTES------------------------------------ */
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/user", userRouter);
+//app.use("/post", postRouter); 
 
 /* --------------------ERROR HANDLING----------------------------- */
 

@@ -1,0 +1,26 @@
+extends layout
+
+block content
+  
+  div.wrapper
+    h1 #{title}
+
+    form(method='POST' action="/signup")
+      div.form-group
+        div.first-name
+          label(for="firstName") #[strong First Name]: 
+          input#firstName.form-control(type='text', name='firstName' required)  
+        div.last-name
+          label(for="lastName") #[strong Last Name]: 
+          input#lastName.form-control(type='text', name='lastName' required)
+        div.username
+          label(for="username") #[strong Username]: 
+          input#username.form-control(type='text', name='username' required)
+        div.password
+          label(for="password") #[strong Password]: 
+          input#password.form-control(type='password', name='password' required)
+        div.button-group
+          button(type="submit" class="button") Sign Up 
+    
+
+
