@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  
+  div.wrapper
+    h1 #{title}
+    a(href="/user") Back 
+    form(method='POST' action="/post/create")
+      div.form-group
+        div.title
+          label(for="title") #[strong Title]: 
+          input#title.form-control(type='text', name='title' required)
+        div.description
+          label(for="description") #[strong Description]: 
+          textarea#description.form-control(name='description' rows=10, cols=30 required)
+        div.button-group
+          button(type="submit" class="button") Post! 
+    if errors
+      ul
+        for error in errors
+          li!= error.msg

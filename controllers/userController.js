@@ -3,10 +3,10 @@ var PostModel = require("../models/postModel");
 var UserModel = require("../models/userModel");
 
 exports.userHome = asyncHandler(async (req, res) => {
-  const postList = await PostModel.find().exec();
-
+  const postList = await PostModel.find().populate("user").exec();
+  const user = req.user;
   res.render("user", {
-    user: req.user,
+    user: user,
     postList: postList,
   });
 });

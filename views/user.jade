@@ -15,15 +15,14 @@ block content
                     a(href=post.url) #{post.title}
                     p #{post.description}
                     p #{post.date_formatted}
-                    p #{post.user.fullName}
+                    if user.membership
+                        p #{post.user.username}
     else 
         #[strong There are no posts. Please create one.]
-
-    a(href="/post/create") Create Post 
-
-    a(href=user.url+"/getPosts") My Posts 
-
-    a(href="/user/membership") Membership 
+    .links
+        a(href="/post/create") Create Post 
+        a(href=user.url+"/getPosts") My Posts 
+        a(href="/user/membership") Membership 
 
 
 

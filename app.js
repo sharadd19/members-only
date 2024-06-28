@@ -60,7 +60,7 @@ app.use(passport.session());
 
 app.use("/", indexRouter);
 app.use("/user", userRouter);
-//app.use("/post", postRouter); 
+app.use("/post", postRouter); 
 
 /* --------------------ERROR HANDLING----------------------------- */
 

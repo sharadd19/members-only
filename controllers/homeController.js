@@ -3,30 +3,15 @@ const passport = require("passport");
 const UserModel = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const PostModel = require("../models/postModel");
 
-exports.index = /* [
-  body("username", "Username must exist")
-  .trim()
-  .isLength({min: 3})
-  .escape()
-  .custom(async value => {
-    return await UserModel.find({username: value}).exec()
-  })
-  .withMessage("Username doesn't exist"),
-  body("username", "Username must exist")
-  .trim()
-  .isLength({min: 3})
-  .escape()
-  .custom(async value => {
-    return await UserModel.find({username: value}).exec()
-  })
-  .withMessage("Username doesn't exist"),   
-
-  , */(req, res) => {
-  var failureMessages = [... new Set(req.session.messages)]
-  
-  res.render("index", { title: "Members Club", failureMessages: failureMessages});
-};
+exports.index = asyncHandler(async (req, res) => {
+  const postList = await PostModel.find().populate("user").exec();
+  res.render("index", {
+    title: "Members Club",
+    postList: postList,
+  });
+});
 
 exports.getSignUpForm = (req, res) => {
   res.render("signup", { title: "Create an Account!" });
@@ -55,7 +40,6 @@ exports.signUp = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-      
 
       res.render("signup", {
         title: "Create an account!",
@@ -78,22 +62,27 @@ exports.signUp = [
       const user = new UserModel(userDetails);
       await user.save();
 
-      res.redirect("/");
+      res.redirect("/login");
     }
   }),
 ];
 
+exports.getLoginForm = (req, res) => {
+  var failureMessages = [...new Set(req.session.messages)];
+
+  res.render("login", { title: "Login!", failureMessages: failureMessages });
+};
 exports.login = passport.authenticate("local", {
   successRedirect: "/user",
-  failureRedirect: "/",
-  failureMessage: true
+  failureRedirect: "/login",
+  failureMessage: true,
 });
 
-exports.logout = (req,res) => {
+exports.logout = (req, res) => {
   req.logout((err) => {
     if (err) {
       return next(err);
     }
     res.redirect("/");
   });
-}
+};
