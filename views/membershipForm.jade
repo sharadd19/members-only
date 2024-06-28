@@ -4,17 +4,22 @@ block content
   
   div.wrapper
     h1 #{title}
-
-    if error.val 
-        h3 #{error.message}
+    a(href="/user") Back
+    if membership 
+      h3 You are already a member! 
+      
+    else
     
-    form(method='POST' action="/user/membership")
-      div.form-group
-        div.secret
-          label(for="secret") #[strong Secret]: 
-          input#secret.form-control(type='text', name='secret' required)  
-        div.button-group
-          button(type="submit" class="button") Get Membership
+      form(method='POST' action="/user/membership")
+        div.form-group
+          div.secret
+            label(for="secret") #[strong Secret]: 
+            input#secret.form-control(type='text', name='secret' required)  
+          div.button-group
+            button(type="submit" class="button") Get Membership
+
+      if error
+        h3 #{error.message}
     
 
 
