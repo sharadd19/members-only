@@ -14,15 +14,18 @@ block content
                 .card   
                     a(href=post.url) #{post.title}
                     p #{post.description}
-                    p #{post.date_formatted}
                     if user.membership
+                        p #{post.date_formatted}
                         p #{post.user.username}
+                    if user.isAdmin 
+                        a(href=post.url+"/delete") Delete Post
     else 
         #[strong There are no posts. Please create one.]
     .links
         a(href="/post/create") Create Post 
         a(href=user.url+"/getPosts") My Posts 
         a(href="/user/membership") Membership 
+        a(href="/user/admin") Admin
 
 
 

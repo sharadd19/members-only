@@ -1,8 +1,11 @@
 var asyncHandler = require("express-async-handler");
 var PostModel = require("../models/postModel");
 var UserModel = require("../models/userModel");
+require("dotenv").config();
+const isAdmin = require("../routes/protected")
 
 exports.userHome = asyncHandler(async (req, res) => {
+
   const postList = await PostModel.find().populate("user").exec();
   const user = req.user;
   res.render("user", {
@@ -10,6 +13,7 @@ exports.userHome = asyncHandler(async (req, res) => {
     postList: postList,
   });
 });
+
 
 exports.getPostsByUser = asyncHandler(async (req, res) => {
   const userPosts = await PostModel.find({ user: req.user.id })
@@ -30,15 +34,35 @@ exports.getMembershipForm = asyncHandler(async(req, res) => {
 
 exports.membership = asyncHandler(async (req, res) => {
   const secret = req.body.secret;
-  const postList = await PostModel.find().exec();
  
-  if (secret === "excelsior") {
+  if (secret === process.env.MEMBERSHIP_PASSWORD) {
     await UserModel.findByIdAndUpdate(req.user.id, {membership: true});
 
-    res.render("user", { user: req.user, postList: postList });
+    res.redirect("/user")
   } else {
     res.render("membershipForm", {
       title: "Membership",
+      error: { val: true, message: "Sorry, you entered the wrong secret" },
+    });
+  }
+});
+
+exports.getAdminForm = asyncHandler(async(req, res) => {
+  const {isAdmin} = await UserModel.findOne({_id: req.user.id}, "isAdmin").exec()
+  
+  res.render("adminForm", { title: "Admin", isAdmin: isAdmin });
+});
+
+exports.admin = asyncHandler(async (req, res) => {
+  const secret = req.body.secret;
+ 
+  if (secret === process.env.ADMIN_PASSWORD) {
+    await UserModel.findByIdAndUpdate(req.user.id, {isAdmin: true});
+
+    res.redirect("/user")
+  } else {
+    res.render("adminForm", {
+      title: "Admin",
       error: { val: true, message: "Sorry, you entered the wrong secret" },
     });
   }

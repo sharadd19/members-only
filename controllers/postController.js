@@ -17,7 +17,6 @@ exports.makePost = [
     .isLength({ min: 3, max: 200 })
     .escape()
     .withMessage("Post over character limit"),
-  
 
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -31,14 +30,11 @@ exports.makePost = [
       });
       return;
     } else {
-
-
       const postDetails = {
-        title: req.body.title, 
-        description: req.body.description, 
+        title: req.body.title,
+        description: req.body.description,
         date: Date.now(),
-        user: req.user
-    
+        user: req.user,
       };
       const post = new PostModel(postDetails);
       await post.save();
@@ -47,3 +43,16 @@ exports.makePost = [
     }
   }),
 ];
+
+exports.deletePostForm = asyncHandler(async (req, res) => {
+  const post = await PostModel.findById(req.params.id).populate("user").exec();
+
+  res.render("deletePostForm", { title: "Delete Post", post: post });
+});
+
+
+exports.deletePost = asyncHandler(async(req, res) => {
+  await PostModel.deleteOne({ _id: req.params.id });
+
+  res.redirect("/user")
+})

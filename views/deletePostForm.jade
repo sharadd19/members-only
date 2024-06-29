@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  
+  div.wrapper
+    div(class="links")
+      a(href="/inventory" class="header") Home
+      a(href="/inventory/categories" class="header") Categories
+      a(href="/inventory/items") Items
+    div.delete
+      h1 #{title}: #{post.title}
+      p #[strong Description]: #{post.description}
+      p #[strong User]: #{post.user.username}
+      p #[strong Date]: #{post.date_formatted} 
+     
+      form(method='POST' action=post.url+"/delete")
+        div.form-group
+          input#postid.form-control(type='hidden', name='postid', value=post._id )
+        div.button-group
+          button(type='submit' class="button") Delete
+          a(href="/user") Cancel
