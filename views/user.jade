@@ -1,7 +1,8 @@
 extends layout
 
 block content
-  
+     
+
   div.wrapper
     h1 Welcome #{user.fullName}!
    
@@ -10,19 +11,21 @@ block content
         a(href="/user/membership" class="button") Membership 
         a(href="/user/admin" class="button") Admin
         a(href="/logout" class="button") Logout 
-    h3 All Posts 
 
+    h3 All Posts 
     if postList.length 
         .grid
             each post in postList 
                 .card   
                     h3 #{post.title}
                     p #{post.description}
-                    if user.membership
+                    if user.membership 
                         p #{post.date_formatted}
                         p #{post.user.username}
+                        if post.user.username === user.username     
+                            a(href=post.url+"/edit") Edit   
                     if user.isAdmin 
-                        a(href=post.url+"/delete") Delete Post
+                        a(href=post.url+"/delete") Delete 
     else 
         #[strong There are no posts. Please create one.]
     

@@ -2,17 +2,19 @@ extends layout
 
 block content
   
+  #{url = undefined === post ? "/post/create" : post.url+"/create"}
+
   div.wrapper
     h1 #{title}
     a(href="/user") Back 
-    form(method='POST' action="/post/create")
+    form(method='POST' action=url)
       div.form-group
         div.title
           label(for="title") #[strong Title]: 
-          input#title.form-control(type='text', name='title' required)
+          input#title.form-control(type='text', name='title' required value=(undefined === post ? '' : post.title))
         div.description
           label(for="description") #[strong Description]: 
-          textarea#description.form-control(name='description' rows=10, cols=30 required)
+          textarea#description.form-control(name='description' rows=10, cols=30 required)=(undefined === post ? '' : post.description)
         div.button-group
           button(type="submit" class="button") Post! 
     if errors

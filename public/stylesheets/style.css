@@ -112,3 +112,6 @@ input, textarea, select {
     width: auto;
   }
 }
+#edit, #delete {
+  display: flex ;
+}

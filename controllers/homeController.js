@@ -6,7 +6,7 @@ const { body, validationResult } = require("express-validator");
 const PostModel = require("../models/postModel");
 
 exports.index = asyncHandler(async (req, res) => {
-  const postList = await PostModel.find().populate("user").exec();
+  const postList = await PostModel.find().sort({ date: -1 }).populate("user").exec();
   res.render("index", {
     title: "Members Club",
     postList: postList,

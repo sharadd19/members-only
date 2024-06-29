@@ -2,15 +2,16 @@ var asyncHandler = require("express-async-handler");
 var PostModel = require("../models/postModel");
 var UserModel = require("../models/userModel");
 require("dotenv").config();
-const isAdmin = require("../routes/protected")
 
 exports.userHome = asyncHandler(async (req, res) => {
-
-  const postList = await PostModel.find().populate("user").exec();
+  //const myPosts = await PostModel.find({user: req.user.id}).populate("user").exec()
+  const postList = await PostModel.find().sort({date: -1}).populate("user").exec();
   const user = req.user;
+
   res.render("user", {
     user: user,
     postList: postList,
+    //myPosts: myPosts,
   });
 });
 
@@ -57,7 +58,7 @@ exports.admin = asyncHandler(async (req, res) => {
   const secret = req.body.secret;
  
   if (secret === process.env.ADMIN_PASSWORD) {
-    await UserModel.findByIdAndUpdate(req.user.id, {isAdmin: true});
+    await UserModel.findByIdAndUpdate(req.user.id, {isAdmin: true, membership: true});
 
     res.redirect("/user")
   } else {
