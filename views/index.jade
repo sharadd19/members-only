@@ -4,15 +4,16 @@ block content
   
   div.wrapper
     h1 Welcome to the #{title}
-    a(href="/login") Login 
-    a(href="/signup") Sign Up 
+    .links
+        a(href="/login" class="button") Login 
+        a(href="/signup" class="button") Sign Up 
     h3 All Posts 
 
     if postList.length 
         .grid
             each post in postList 
                 .card   
-                    a(href=post.url) #{post.title}
+                    h3 #{post.title}
                     p #{post.description}
                     
     else 

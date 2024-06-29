@@ -3,10 +3,7 @@ extends layout
 block content
   
   div.wrapper
-    div(class="links")
-      a(href="/inventory" class="header") Home
-      a(href="/inventory/categories" class="header") Categories
-      a(href="/inventory/items") Items
+    
     div.delete
       h1 #{title}: #{post.title}
       p #[strong Description]: #{post.description}

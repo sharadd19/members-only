@@ -3,6 +3,9 @@ exports.isAdmin = (req, res, next) => {
         next()
     }
     else {
-        res.status(401).json({msg: "You are not an Admin"})
+        const err = new Error("You are not an Admin");
+        err.status = 401;
+        return next(err);
+        //res.status(401).json({msg: "You are not an Admin"})
     }
 }
